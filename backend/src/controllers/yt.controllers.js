@@ -9,9 +9,9 @@ export const createYt = (req, res) => {
   res.setHeader("Transfer-Encoding", "chunked");
 
   const process = spawn("yt-dlp", [
-    "-f", "bestaudio",
-    "--no-playlist",
-    "-o", "-",
+    "-x",
+"--audio-format", "mp3",
+"-o", "-",
     url
   ]);
 
