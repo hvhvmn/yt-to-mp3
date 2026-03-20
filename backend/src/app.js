@@ -6,5 +6,5 @@ server.use(cors({
     origin:"http://localhost:5173"
 }))
 server.use("/api/yt",ytRouter)
-
+server.use(express.static("./public"))
 export default server;

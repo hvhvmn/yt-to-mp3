@@ -18,12 +18,12 @@ export const createYt = (req, res) => {
   process.stdout.pipe(res);
 
   process.stderr.on("data", (data) => {
-    console.log(data.toString()); // progress logs
+    console.log(data.toString()); 
   });
 
   process.on("close", () => {
     console.log("Download finished");
-    res.end(); // 👈 spinner band karega
+    res.end();
   });
 
   process.on("error", (err) => {
@@ -35,20 +35,3 @@ export const createYt = (req, res) => {
     process.kill("SIGINT");
   });
 };
-// export const downloadFile = (req, res) => {
-//   const { name } = req.params;
-//   const filePath = path.resolve("downloads", name);
-
-//   if (!fs.existsSync(filePath)) {
-//     return res.status(404).json({ message: "File already downloaded or not found" });
-//   }
-
-//   res.download(filePath, name, (err) => {
-//     if (err) console.log(err);
-
-//     // 👇 download ke baad delete → dubara download nahi hoga
-//     fs.unlink(filePath, (err) => {
-//       if (err) console.log(err);
-//     });
-//   });
-// };
