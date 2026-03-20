@@ -1,35 +1,31 @@
-import { spawn } from "child_process";
+import { exec } from "child_process";
+import path from "path";
+import fs from "fs";
 
 export const createYt = (req, res) => {
   const { url } = req.query;
-  if (!url) return res.status(400).json({ message: "URL required" });
+  if (!url) return res.status(400).send("URL required");
 
-  res.setHeader("Content-Disposition", 'attachment; filename="audio.mp3"');
-  res.setHeader("Content-Type", "audio/mpeg");
+  // unique file name (important)
+  const fileName = `audio-${Date.now()}.mp3`;
+  const filePath = path.join("/tmp", fileName); // ⚠️ Render ke liye best
 
-  const process = spawn("yt-dlp", [
-    "-x",
-    "--audio-format", "mp3",
-    "-o", "-",
-    url
-  ]);
+  exec(
+    `yt-dlp -x --audio-format mp3 --no-playlist -o "${filePath}" "${url}"`,
+    (err, stdout, stderr) => {
+      if (err) {
+        console.log("ERROR:", err);
+        console.log(stderr);
+        return res.status(500).send("Download failed");
+      }
 
-  process.stdout.pipe(res);
+      // ✅ file complete hone ke baad hi send
+      res.download(filePath, fileName, (err) => {
+        if (err) console.log(err);
 
-  process.stdout.on("end", () => {
-    res.end();
-  });
-
-  process.stderr.on("data", (data) => {
-    console.log(data.toString());
-  });
-
-  process.on("error", (err) => {
-    console.log(err);
-    res.status(500).end("Error");
-  });
-
-  req.on("close", () => {
-    process.kill("SIGINT");
-  });
+        // cleanup
+        fs.unlink(filePath, () => {});
+      });
+    }
+  );
 };
