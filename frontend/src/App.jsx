@@ -7,7 +7,7 @@ const App = () => {
   const handleDownload = () => {
     if (!url.trim()) return alert("Enter a URL");
 
-    window.location.href = `https://yt-to-mp3-5qvk.onrender.com/api/yt?url=${encodeURIComponent(url)}`;
+    window.location.href = `https://yt-to-mp3-1-03ij.onrender.com/api/yt?url=${encodeURIComponent(url)}`;
     setUrl("")
   };
 
