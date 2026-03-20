@@ -6,24 +6,22 @@ export const createYt = (req, res) => {
 
   res.setHeader("Content-Disposition", 'attachment; filename="audio.mp3"');
   res.setHeader("Content-Type", "audio/mpeg");
-  res.setHeader("Transfer-Encoding", "chunked");
 
   const process = spawn("yt-dlp", [
     "-x",
-"--audio-format", "mp3",
-"-o", "-",
+    "--audio-format", "mp3",
+    "-o", "-",
     url
   ]);
 
   process.stdout.pipe(res);
 
-  process.stderr.on("data", (data) => {
-    console.log(data.toString()); 
+  process.stdout.on("end", () => {
+    res.end();
   });
 
-  process.on("close", () => {
-    console.log("Download finished");
-    res.end();
+  process.stderr.on("data", (data) => {
+    console.log(data.toString());
   });
 
   process.on("error", (err) => {
