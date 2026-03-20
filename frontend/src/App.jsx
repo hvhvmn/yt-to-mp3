@@ -45,7 +45,7 @@ const App = () => {
 
         {/* Hero Text - Dynamic font sizing based on viewport */}
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.1] mb-8 sm:mb-14">
-          Download your favorite <br className="hidden sm:block" /> videos <br />
+        Turn Your  Videos into <br className="hidden sm:block" /> MP3 <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
             instantly.
           </span>
