@@ -7,4 +7,7 @@ server.use(cors({
 }))
 server.use("/api/yt",ytRouter)
 server.use(express.static("./public"))
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve("backend/public/index.html"));
+  });
 export default server;
